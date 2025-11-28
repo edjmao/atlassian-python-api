@@ -167,6 +167,10 @@ Manage projects
     # Results can be filtered by the following fields: query, status.
     jira.get_project_versions_paginated(key, start=None, limit=None, order_by=None, expand=None, query=None, status=None)
 
+    # Returns all versions in the system. Results are paginated.
+    # Results can be filtered by the following fields: query, projectIds.
+    jira.get_all_versions_paginated(start=None, limit=None, query=None, project_ids=None)
+
     # Add missing version to project
     jira.add_version(key, project_id, version, is_archived=False, is_released=False)
 

@@ -2779,6 +2779,36 @@ class Jira(AtlassianRestAPI):
         url = f"{base_url}/{key}/version"
         return self.get(url, params=params)
 
+    def get_versions_paginated(
+        self,
+        limit: Optional[int] = None,
+        query: Optional[str] = None,
+        project_ids: Optional[str] = None,
+        start: Optional[int] = None,
+    ):
+        """
+        Retrieve paginated collection of versions matching given query optionally filtered by given project IDs.
+        :param max_results: maximum number of versions to return. Default: 100
+        :param query: string that version names will be matched with
+        :param project_ids: set of project IDs to filter versions with. Accepts comma separated string,
+            list, set, or tuple.
+        :param start_at: index of the first version to return
+        """
+        params: dict = {}
+        if limit is not None:
+            params["maxResults"] = int(limit)
+        if query is not None:
+            params["query"] = str(query)
+        if project_ids is not None:
+            if isinstance(project_ids, (list, tuple, set)):
+                project_ids = ",".join(project_ids)
+            params["projectIds"] = project_ids
+        if start is not None:
+            params["startAt"] = int(start)
+        base_url = self.resource_url("version")
+        url = f"{base_url}"
+        return self.get(url, params=params)
+
     def get_version(self, version: T_id):
         """
         Returns a specific version with the given id.
